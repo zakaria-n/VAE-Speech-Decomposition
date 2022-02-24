@@ -23,7 +23,7 @@ def plot_specgram_from_wave(waveform, sample_rate, title="Spectrogram", xlim=Non
 
 def plot_specgram(spec, sample_rate, title="Spectrogram", xlim=None):
   num_freq, num_frames, num_channels = spec.shape
-  time_axis = np.arange(0, num_frames) / sample_rate
+  time_axis = np.arange(0, num_frames) / num_frames
   freq_axis = np.arange(0, num_freq) * sample_rate/2/num_freq
   figure, axes = plt.subplots(num_channels, 1)
   if num_channels == 1:
@@ -37,11 +37,11 @@ def plot_specgram(spec, sample_rate, title="Spectrogram", xlim=None):
   figure.suptitle(title)
   plt.show(block=False)
 
-  def plot_waveform(waveform, sample_rate, title="Waveform", xlim=None, ylim=None):
+def plot_waveform(waveform, sample_rate, title="Waveform", xlim=None, ylim=None):
     waveform = waveform.numpy()
 
     num_channels, num_frames = waveform.shape
-    time_axis = torch.arange(0, num_frames) / sample_rate
+    time_axis = np.arange(0, num_frames) / sample_rate
 
     figure, axes = plt.subplots(num_channels, 1)
     if num_channels == 1:
