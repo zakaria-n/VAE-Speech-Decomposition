@@ -22,18 +22,12 @@ def plot_specgram_from_wave(waveform, sample_rate, title="Spectrogram", xlim=Non
 
 
 def plot_specgram(spec, sample_rate, title="Spectrogram", xlim=None):
-  num_freq, num_frames, num_channels = spec.shape
+  num_freq, num_frames = spec.shape
   time_axis = np.arange(0, num_frames) / num_frames
   freq_axis = np.arange(0, num_freq) * sample_rate/2/num_freq
-  figure, axes = plt.subplots(num_channels, 1)
-  if num_channels == 1:
-    axes = [axes]
-  for c in range(num_channels):
-    axes[c].pcolormesh(time_axis, freq_axis, spec[:,:,c], cmap='viridis')
-    if num_channels > 1:
-      axes[c].set_ylabel(f'Channel {c+1}')
-    if xlim:
-      axes[c].set_xlim(xlim)
+  figure, axes = plt.subplots(1, 1)
+  axes.pcolormesh(time_axis, freq_axis, spec[:,:], cmap='viridis')
+  axes.set_xlim(xlim)
   figure.suptitle(title)
   plt.show(block=False)
 
