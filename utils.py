@@ -92,7 +92,7 @@ def play_audio(waveform, sample_rate):
 ## Features extraction 
 
 def specToAudio(x):
-    return librosa.feature.inverse.mel_to_audio(x) # to test 
+    return librosa.feature.griffinlim(x) # to test 
 
 def f0(x, gender): 
     '''
@@ -184,4 +184,3 @@ def formants_array(x_train, gender):
     
     return np.array(formants_list)
 
-    
