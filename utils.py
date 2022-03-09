@@ -92,7 +92,7 @@ def play_audio(waveform, sample_rate):
 ## Features extraction 
 
 def specToAudio(x):
-    return librosa.feature.griffinlim(x) # to test 
+    return librosa.core.spectrum.griffinlim(x) # to test 
 
 def f0(x, gender): 
     '''
@@ -106,8 +106,7 @@ def f0(x, gender):
         f0min = 150
         f0max = 350
     
-    audio = specToAudio(x)
-    sound = parselmouth.Sound(audio) # read the sound
+    sound = parselmouth.Sound(x) # read the sound
     pitch = praat.call(sound, "To Pitch", 0.0, f0min, f0max) # create a praat pitch object
     pitch_values = pitch.selected_array['frequency']
 
@@ -142,11 +141,9 @@ def extract_formants(x, gender):
         f0min = 200
         f0max = 300
         formant_ceiling = 5500 # An average adult female speaker has a vocal tract length that requires an average ceiling of 5500 Hz 
-    
-    audio = specToAudio(x) 
 
     # Transform the file into a parselmouth object sound
-    sound = parselmouth.Sound(audio) 
+    sound = parselmouth.Sound(x) 
 
     # First, compute the occurrences of periodic instances in the signal:
     pointProcess = praat.call(sound, "To PointProcess (periodic, cc)", f0min, f0max)
