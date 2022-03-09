@@ -7,6 +7,10 @@ import librosa
 import parselmouth 
 from parselmouth import praat
 
+from os import listdir
+from os.path import isfile, join
+import re
+
 
 def plot_specgram_from_wave(waveform, sample_rate, title="Spectrogram", xlim=None):
   waveform = waveform.numpy()
@@ -94,7 +98,7 @@ def play_audio(waveform, sample_rate):
 def specToAudio(x):
     return librosa.core.spectrum.griffinlim(x) # to test 
 
-def f0(x, gender): 
+def f0(sound, gender): 
     '''
     Measure voice pitch
     '''
@@ -106,7 +110,6 @@ def f0(x, gender):
         f0min = 150
         f0max = 350
     
-    sound = parselmouth.Sound(x) # read the sound
     pitch = praat.call(sound, "To Pitch", 0.0, f0min, f0max) # create a praat pitch object
     pitch_values = pitch.selected_array['frequency']
 
@@ -122,7 +125,7 @@ def f0_array(x_train, gender):
 
 
 
-def extract_formants(x, gender):
+def extract_formants(sound, gender):
     '''
     Extract 3 first formants with Praat's functions thanks to Python's parselmouth
     '''
@@ -141,9 +144,6 @@ def extract_formants(x, gender):
         f0min = 200
         f0max = 300
         formant_ceiling = 5500 # An average adult female speaker has a vocal tract length that requires an average ceiling of 5500 Hz 
-
-    # Transform the file into a parselmouth object sound
-    sound = parselmouth.Sound(x) 
 
     # First, compute the occurrences of periodic instances in the signal:
     pointProcess = praat.call(sound, "To PointProcess (periodic, cc)", f0min, f0max)
