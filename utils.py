@@ -179,9 +179,10 @@ def extract_formants(sound, gender):
     # # We should check that nan values appear in the same places
     # formants = formants[~np.isnan(formants)]
 
-    frt = f1_list + f2_list + f3_list
+    frt = np.concatenate(f1_list, f2_list, axis=0)
+    frt = np.concatenate(frt, f3_list, axis=0)
 
-    return frt, numPoints
+    return np.array(frt), numPoints
 
 
 def formants_array(x_train, gender):
